@@ -21,13 +21,21 @@ excel_file = "CB___2016-2021.xlsx"
 
 df_excel = pd.read_excel(excel_file, sheet_name = 'CB 행사내역', usecols= [2])
 
+fncNm = []
+#엑셀에서 종목명만 리스트에 저장
+for idx in df_excel.index:
+    fncNm.append(df_excel.loc[idx, '종목명' ])
+#print(fncNm)
+
+#크롤링 시작
 browser = webdriver.Chrome('C://chromedriver/chromedriver.exe')
 wait = WebDriverWait( browser, 10 )
 
 browser.get(url)
-for idx in df_excel.index:
+for fncItm in fncNm:
+    innerList = []
     # 검색할 종목
-    trg_name = df_excel.loc[idx, '종목명' ]
+    trg_name = fncItm
     # 검색어 입력
     wait.until( EC.element_to_be_clickable( (By.ID, 'INPUT_SN2') ) )
     browser.find_element_by_xpath('//*[@id="INPUT_SN2"]').send_keys( trg_name + Keys.ENTER )
@@ -45,9 +53,10 @@ for idx in df_excel.index:
     # 내용물 로드 기다림
     while(True):
         time.sleep(.1)
-        content_text = browser.find_element_by_xpath('//*[@id="txt1_REP_SECN_NM"]').text
+        content_text = browser.find_element_by_xpath('//*[@id="txt1_ISSU_DT"]').text
+        innerList.append(content_text)
         if len( content_text ) > 0:
-            print( idx, content_text ) # debug
+            print( content_text ) # debug
             break
     # data parsing
     '''
