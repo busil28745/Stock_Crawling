@@ -43,14 +43,14 @@ for fncItm in fncNm:
     # 검색할 종목
     trg_name = fncItm
     # 검색어 입력
-    wait.until( EC.element_to_be_clickable( (By.ID, 'INPUT_SN2') ) )
-    browser.find_element_by_xpath('//*[@id="INPUT_SN2"]').send_keys( trg_name + Keys.ENTER )
-    # 팝업으로 이동
-    wait.until( EC.element_to_be_clickable( (By.ID, 'iframeIsin') ) )
-    iframe = browser.find_element_by_xpath('//*[@id="iframeIsin"]')
-    browser.switch_to.frame(iframe)
-    # 목표 종목 클릭
     try:
+        wait.until( EC.element_to_be_clickable( (By.ID, 'INPUT_SN2') ) )
+        browser.find_element_by_xpath('//*[@id="INPUT_SN2"]').send_keys( trg_name + Keys.ENTER )
+    # 팝업으로 이동
+        wait.until( EC.element_to_be_clickable( (By.ID, 'iframeIsin') ) )
+        iframe = browser.find_element_by_xpath('//*[@id="iframeIsin"]')
+        browser.switch_to.frame(iframe)
+    # 목표 종목 클릭
         wait.until( EC.element_to_be_clickable( (By.ID, 'isinList_0_ISIN_ROW')))
         browser.find_element_by_xpath('//*[@id="isinList_0_ISIN_ROW"]').click() # 검색 목록 중 첫번째 행 선택
     # 조회 클릭
@@ -62,50 +62,20 @@ for fncItm in fncNm:
         while(True):
             time.sleep(.1)
             content_text = browser.find_element_by_xpath('//*[@id="txt1_ISSU_DT"]').text
-            innerList.append(content_text)
             if len( content_text ) > 0:
     #            print( content_text ) # debug
-                break
-            #만기일
-        while(True):
-            time.sleep(.1)
-            content_text = browser.find_element_by_xpath('//*[@id="txt1_XPIR_DT"]').text
-            innerList.append(content_text)
-            if len( content_text ) > 0:
-    #            print( content_text ) # debug
-                break    
-            #표면이율
-        while(True):
-            time.sleep(.1)
-            content_text = browser.find_element_by_xpath('//*[@id="txt1_COUPON_RATE"]').text
-            innerList.append(content_text)
-            if len( content_text ) > 0:
-    #            print( content_text ) # debug
-                break    
-            #발행금액
-        while(True):
-            time.sleep(.1)
-            content_text = browser.find_element_by_xpath('//*[@id="txt1_FIRST_ISSU_AMT"]').text
-            innerList.append(content_text)
-            if len( content_text ) > 0:
-    #            print( content_text ) # debug
-                break    
-            #이자지급주기
-        while(True):
-            time.sleep(.1)
-            content_text = browser.find_element_by_xpath('//*[@id="txt2_INT_PAY_CYCLE_TPCD_NM"]').text
-            innerList.append(content_text)
-            if len( content_text ) > 0:
-    #            print( content_text ) # debug
+                innerList.append(content_text)
                 break 
-            #업종
-        while(True):
-            time.sleep(.1)
-            content_text = browser.find_element_by_xpath('//*[@id="txt1_INDTP_CLSF_NO"]').text
-            innerList.append(content_text)
-            if len( content_text ) > 0:
-    #            print( content_text ) # debug
-                break 
+        content_text1 = browser.find_element_by_xpath('//*[@id="txt1_XPIR_DT"]').text
+        innerList.append(content_text1)
+        content_text2 = browser.find_element_by_xpath('//*[@id="txt1_COUPON_RATE"]').text
+        innerList.append(content_text2)
+        content_text3 = browser.find_element_by_xpath('//*[@id="txt1_FIRST_ISSU_AMT"]').text
+        innerList.append(content_text3)
+        content_text4 = browser.find_element_by_xpath('//*[@id="txt2_INT_PAY_CYCLE_TPCD_NM"]').text
+        innerList.append(content_text4)
+        content_text5 = browser.find_element_by_xpath('//*[@id="txt1_INDTP_CLSF_NO"]').text
+        innerList.append(content_text5)
     except TimeoutException:
         print("No Found")
         for i in range(5):
