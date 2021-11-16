@@ -17,15 +17,15 @@ from selenium.webdriver.support.ui import WebDriverWait
 MAX_SLEEP_TIME = 5
 
 url = "https://seibro.or.kr/websquare/control.jsp?w2xPath=/IPORTAL/user/bond/BIP_CNTS03005V.xml&menuNo=88"
-excel_file = "CB___2016-2021.xlsx"
+excel_file = "CB_new.xlsx"
 
-df_excel = pd.read_excel(excel_file, sheet_name = 'CB 행사내역', usecols= [2])
+df_excel = pd.read_excel(excel_file, sheet_name = '행사+리픽싱+발행 CB목록', usecols= [0])
 
 fncNm = []
 #엑셀에서 종목명만 리스트에 저장
 for idx in df_excel.index:
     fncNm.append(df_excel.loc[idx, '종목명' ])
-#print(fncNm)
+print(fncNm)
 
 #크롤링 시작
 browser = webdriver.Chrome('C://chromedriver/chromedriver.exe')
@@ -33,7 +33,7 @@ wait = WebDriverWait( browser, 10 )
 
 browser.get(url)
 for fncItm in fncNm:
-    innerList = []
+#    innerList = []
     # 검색할 종목
     trg_name = fncItm
     # 검색어 입력
@@ -53,8 +53,8 @@ for fncItm in fncNm:
     # 내용물 로드 기다림
     while(True):
         time.sleep(.1)
-        content_text = browser.find_element_by_xpath('//*[@id="txt1_ISSU_DT"]').text
-        innerList.append(content_text)
+        content_text = browser.find_element_by_xpath('//*[@id="txt1_REP_SECN_NM"]').text
+#        innerList.append(content_text)
         if len( content_text ) > 0:
             print( content_text ) # debug
             break
