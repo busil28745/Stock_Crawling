@@ -40,6 +40,7 @@ for fncItm in fncNm:
     print(fncItm)
     innerList = []
     innerList.append(fncItm)
+    innerList.append(".")
     # 검색할 종목
     trg_name = fncItm
     # 검색어 입력
@@ -58,7 +59,7 @@ for fncItm in fncNm:
         wait.until( EC.element_to_be_clickable( (By.ID, 'group186' ) ) )
         browser.find_element_by_xpath('//*[@id="group186"]').click()
         # 내용물 로드 기다림
-            #발행일
+        #발행일
         while(True):
             time.sleep(.1)
             content_text = browser.find_element_by_xpath('//*[@id="txt1_ISSU_DT"]').text
@@ -66,23 +67,38 @@ for fncItm in fncNm:
     #            print( content_text ) # debug
                 innerList.append(content_text)
                 break 
+        #만기일
         content_text1 = browser.find_element_by_xpath('//*[@id="txt1_XPIR_DT"]').text
         innerList.append(content_text1)
+        #표면이율
         content_text2 = browser.find_element_by_xpath('//*[@id="txt1_COUPON_RATE"]').text
         innerList.append(content_text2)
+        #발행금액
         content_text3 = browser.find_element_by_xpath('//*[@id="txt1_FIRST_ISSU_AMT"]').text
         innerList.append(content_text3)
-        content_text4 = browser.find_element_by_xpath('//*[@id="txt2_INT_PAY_CYCLE_TPCD_NM"]').text
-        innerList.append(content_text4)
+        #업종
         content_text5 = browser.find_element_by_xpath('//*[@id="txt1_INDTP_CLSF_NO"]').text
         innerList.append(content_text5)
+        #이자지급주기
+        while(True):
+            time.sleep(.1)
+            content_text4 = browser.find_element_by_xpath('//*[@id="txt2_INT_PAY_CYCLE_TPCD_NM"]').text
+            if len( content_text ) > 0:
+                innerList.append(content_text4)
+                break
+        #차기이표일
+        content_text6 = browser.find_element_by_xpath('//*[@id="txt2_AFTER_DATE"]').text
+        innerList.append(content_text6)
+        #직전이표일
+        content_text7 = browser.find_element_by_xpath('//*[@id="txt2_BEFORE_DATE"]').text
+        innerList.append(content_text7)
     except TimeoutException:
         print("No Found")
-        for i in range(5):
+        for i in range(7):
             innerList.append('오류')
 
     # data parsing
-#    print(innerList)
+    print(innerList)
     # refresh
     rand_value = randint(2, MAX_SLEEP_TIME) # 2초~MAX
     time.sleep(rand_value) # 서버 부하 방지
@@ -92,7 +108,7 @@ browser.quit()
 
 write_wb = openpyxl.Workbook()
 write_ws = write_wb.active
-write_ws.append(['종목명', '','발행일','만기일','표면이율','발행금액','이자지급주기','업종'])
+write_ws.append(['종목명', '','발행일','만기일','표면이율','발행금액','업종','이자지급주기','차기이표일','직전이표일'])
 for item in outerList:
     write_ws.append(item)
 
