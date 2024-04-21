@@ -1,6 +1,6 @@
 # Stock_Crawling
 ## seibro stock crawling
-#### stock web Crawling source for python
+#### stock web Crawling source (python)
 #### 세이브로에서 원하는 정보 웹 크롤링용 파이썬 소스
 --------------
  
